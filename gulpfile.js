@@ -22,7 +22,7 @@ var lib = require('bower-files')({
 var buildProduction = utilities.env.production;
 
 gulp.task('concatInterface', function() {
-  return gulp.src(['./js/frontend.js', './js/signup.js'])
+  return gulp.src(['./js/*-interface.js'])
     .pipe(concat('allConcat.js'))
     .pipe(gulp.dest('./tmp'));
 });
@@ -66,16 +66,16 @@ gulp.task('bowerJS', function() {
     .pipe(gulp.dest('./build/js'));
 });
 
-gulp.task('bowerCSS', function() {
-  return gulp.src(lib.ext('css')).files)
-    .pipe(concat('vendor.css'))
-    .pipe(gulp.dest('./build/css'));
-});
+// gulp.task('bowerCSS', function() {
+//   return gulp.src(lib.ext('css')).files
+//     .pipe(concat('vendor.css'))
+//     .pipe(gulp.dest('./build/css'));
+// });
 
-gulp.task('bower', ['bowerJS', 'bowerCSS']);
+gulp.task('bower', ['bowerJS']);
 
 gulp.task('serve', function() {
-  browserSync.init({
+  browser.init({
     server: {
       baseDir: "./",
       index: "index.html"
@@ -83,12 +83,17 @@ gulp.task('serve', function() {
   });
   gulp.watch(['js/*.js'], ['jsBuild']);
   gulp.watch(['bower.json'], ['bowerBuild']);
+  gulp.watch(['*.html'], ['htmlBuild']);
 });
 
-gulp.task('jsBuild', ['jsBrowswerify', 'jshint'], function(){
-  browserSync.reload();
+gulp.task('jsBuild', ['jsBrowserify', 'jshint'], function(){
+  browser.reload();
 });
 
 gulp.task('bowerBuild', ['bower'], function(){
-  browserSync.reload();
+  browser.reload();
+});
+
+gulp.task('htmlBuild', function(){
+  browser.reload();
 });
